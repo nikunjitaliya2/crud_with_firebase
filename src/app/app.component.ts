@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc
 } from "@angular/fire/firestore";
+
 import {Observable} from "rxjs";
 
 @Component({
@@ -15,7 +16,9 @@ import {Observable} from "rxjs";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
+  display = "none";
   title = 'ang-fire';
   userData!:Observable<any>;
 
@@ -23,16 +26,27 @@ export class AppComponent {
     this.getData();
   }
 
+  vForm ={
+    uname : '',
+    uemail: '',
+    age: '',
+    mobile: '',
+    upassword: ''
+  }
+
+  regerInteger = /^\d+$/
 
   // insert user data
   addData(f: any) {
-    const collectionInstance = collection(this.firestore, 'users');
-    addDoc(collectionInstance, f.value)
-      .then(() => {
-      console.log("saved successfully");
-    }).catch((err) => {
-      console.log(err);
-    })
+    if (f.valid) {
+      const collectionInstance = collection(this.firestore, 'users');
+      addDoc(collectionInstance, f.value)
+        .then(() => {
+          console.log("saved successfully");
+        }).catch((err) => {
+        console.log(err);
+      })
+    }
   }
 
   // read user data
@@ -45,25 +59,44 @@ export class AppComponent {
     this.userData = collectionData(collectionInstance , {idField : 'id'})
   }
 
+  updatedName: string = '';
+  updatedEmail: string = '';
+
+  // test update details
+
+
+  // work done updatData()
   updateData(id: string){
     const docInstance = doc(this.firestore,'users',id);
     const updateData = {
-      name : 'element'
+      name : this.updatedName ,// pass the updated name value here
+      email : this.updatedEmail // pass the updated email value here
     }
     updateDoc(docInstance,updateData)
       .then(()=> {
-        console.log('data updated');
+        console.log('updated successfully');
       })
       .catch((err)=>{
         console.log("err",err);
       })
+    this.updatedName= ''
   }
 
+
+  // delete user
   deleteUser(id: string){
     const docInstance = doc(this.firestore,'users',id);
     deleteDoc(docInstance)
       .then(()=>{
-        console.log('data deleted');
+        console.log('delete successfully');
       })
   }
+  // check working of model
+  openModal() {
+    this.display = "block";
+  }
+  onCloseHandled() {
+    this.display = "none";
+  }
+
 }

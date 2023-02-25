@@ -1,31 +1,110 @@
 <!--<router-outlet></router-outlet>-->
+
+
+<!--<div class="container d-grid align-items-center" style="height: 100%">-->
+<!--  <div class="card p-3">-->
+<!--    <form #f="ngForm" (ngSubmit)="addData(f)">-->
+<!--      <div class="form-floating mb-3">-->
+<!--        <input type="text" class="form-control" id="uname" name="name" placeholder="User Name" ngModel >-->
+<!--        <label for="uname">Enter Name</label>-->
+<!--      </div>-->
+<!--      <div class="form-floating mb-3">-->
+<!--        <input type="email" class="form-control" id="uemail" name="email" placeholder="name@example.com" ngModel >-->
+<!--        <label for="uemail">Enter Email</label>-->
+<!--      </div>-->
+<!--      <div class="form-floating mb-3">-->
+<!--        <input type="password" class="form-control" id="upassword" name="pasword" placeholder="Password" ngModel>-->
+<!--        <label for="upassword">Password</label>-->
+<!--      </div>-->
+<!--      <input class="btn btn-primary" type="submit">-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->
+
+
 <div class="container d-grid align-items-center" style="height: 100%">
   <div class="card p-3">
     <form #f="ngForm" (ngSubmit)="addData(f)">
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="uname" name="name" placeholder="User Name" ngModel>
+        <input type="text" class="form-control" id="uname" name="name" placeholder="User Name" [(ngModel)]="vForm.uname"
+               #uname="ngModel" required maxlength="32">
         <label for="uname">Enter Name</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="uemail" name="email" placeholder="name@example.com" ngModel>
-        <label for="uemail">Enter Name</label>
+        <input type="email" class="form-control" id="uemail" name="email" placeholder="name@example.com"
+               [(ngModel)]="vForm.uemail" #uemail="ngModel" required maxlength="32">
+        <label for="uemail">Enter Email</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" class="form-control" id="upassword" name="pasword" placeholder="Password" ngModel>
+        <input type="number" class="form-control" id="age" name="age" placeholder="Age" [(ngModel)]="vForm.age"
+               #age="ngModel" required min="12" max="60" [pattern]="regerInteger">
+        <label for="age">Age</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" class="form-control" id="mobile" name="mobile" placeholder="Age" [(ngModel)]="vForm.mobile"
+               #mobile="ngModel" required minlength="10" maxlength="10">
+        <label for="mobile">Mobile no.</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="upassword" name="pasword" placeholder="Password"
+               [(ngModel)]="vForm.upassword" #upassword="ngModel">
         <label for="upassword">Password</label>
       </div>
-      <input type="submit">
+      <input class="btn btn-primary" type="submit">
     </form>
   </div>
 </div>
 
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let data of userData|async">
-    {{data.email}} - {{data.name}}
-    <button (click)="updateData(data.id)">update</button>
-    <button (click)="deleteUser(data.id)">delete</button>
-  </li>
-</ul>
+
+<table class="table" >
+  <thead>
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">UserName</th>
+    <th scope="col">Email</th>
+    <th scope="col">Age</th>
+    <th scope="col">Mobile No.</th>
+    <th scope="col">Update</th>
+    <th scope="col">Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of userData|async; let i = index">
+    <th>{{i+1}}</th>
+    <td>{{data.name}}</td>
+    <td>{{data.email}}</td>
+    <td>{{data.age}}</td>
+    <td>{{data.mobile}}</td>
+    <td><button type="button" class="btn btn-primary" (click)="openModal()">update</button></td>
+    <td><button type="button" class="btn btn-primary" (click)="deleteUser(data.id)">delete</button></td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!--<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">-->
+<!--  <div class="modal-dialog" role="document">-->
+<!--    <div class="modal-content"  >-->
+<!--      <div class="modal-header">-->
+<!--        <h4 class="modal-title">Update user</h4>-->
+<!--      </div>-->
+<!--      <div class="modal-body" *ngFor="let data of userData|async">-->
+<!--        <div class="form-floating mb-3">-->
+<!--          <input type="text" class="form-control" id="uNameInModal" name="name" placeholder="User Name" [(ngModel)]="updatedName">-->
+<!--          <label for="uNameInModal">change Name</label>-->
+<!--        </div>-->
+<!--        <div class="form-floating mb-3">-->
+<!--          <input type="email" class="form-control" id="uEmailInModal" name="email" placeholder="name@example.com" [(ngModel)]="updatedEmail">-->
+<!--          <label for="uEmailInModal">change email</label>-->
+<!--        </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button class="btn btn-primary" type="button" (click)="updateData(data.id)">update</button>-->
+<!--        <button type="button" class="btn btn-default" (click)="onCloseHandled()" >Close</button>-->
+<!--      </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <!--<form #f="ngForm" (ngSubmit)="addData(f)">-->
 <!--  <input type="text" name="name" ngModel>-->
@@ -37,3 +116,12 @@
 <!--  <input type="submit">-->
 <!--</form>-->
 
+<!--<ul class="list-group">-->
+<!--  <li class="list-group-item" *ngFor="let data of userData|async">-->
+<!--    {{data.email}} - {{data.name}}-->
+<!--    <div class="d-grid gap-2 d-md-block">-->
+<!--      <button class="btn btn-primary" type="button" (click)="updateData(data.id)">update</button>-->
+<!--      <button class="btn btn-primary" type="button" (click)="deleteUser(data.id)">delete</button>-->
+<!--    </div>-->
+<!--  </li>-->
+<!--</ul>-->
